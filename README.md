@@ -1,2 +1,1 @@
-# karmaquest-servcie
-karmaquest-servcie
+# api pores -services for the common CRUDS operation for any resources.
