@@ -1,0 +1,107 @@
+
+
+// Service Test Data
+
+"schema": null,
+"serviceId": "SER123456",
+"productId": "TVS66732169",
+"serviceType": "repair",
+"serviceCenter": {
+"centerId": "SC9876",
+"centerName": "TVS Service Center - Bangalore",
+"location": {
+  "address": "123, Service Road",
+  "city": "Bangalore",
+  "postalCode": "560001",
+  "country": "India"
+}
+},
+"serviceDate": "2024-10-10",
+"cost": 2500,
+"serviceDetails": {
+"issuesResolved": [
+  "Engine oil change",
+  "Brake pad adjustment",
+  "Tire alignment"
+],
+"partsReplaced": [
+  "Oil filter",
+  "Brake pads"
+],
+"serviceDurationHours": 3.5
+},
+"warrantyExtensionMonths": 6,
+"isActive": true
+
+
+
+
+
+
+"schema": null,
+"serviceId": "SER123456",
+"productId": "TVS66732169",
+"serviceType": "maintenance",
+"serviceCenter": {
+"centerId": "SC9876",
+"centerName": "TVS Service Center - Bangalore",
+"location": {
+  "address": "123, Service Road",
+  "city": "Bangalore",
+  "postalCode": "560001",
+  "country": "India"
+}
+},
+"serviceDate": "2024-10-10",
+"cost": 2500,
+"serviceDetails": {
+"issuesResolved": [
+  "Engine oil change",
+  "Brake pad adjustment",
+  "Tire alignment"
+],
+"partsReplaced": [
+  "Oil filter",
+  "Brake pads"
+],
+"serviceDurationHours": 3.5
+},
+"warrantyExtensionMonths": 6,
+"isActive": true
+
+
+// Product test Data
+
+"productId": "TVS66732169",
+"name": "TVS Jupyter",
+"category": "Scooter",
+"engineCapacity": 114,
+"price": 74000.0,
+"fuelType": "Petrol",
+"features": {
+"abs": false,
+"digitalConsole": true,
+"fuelInjection": false,
+"bluetoothConnectivity": true
+},
+"launchDate": "10/03/2024",
+"warrantyYears": 2
+
+"productId": "TVS66732169",
+"name": "TVS Jupyter",
+"category": "Scooter",
+"engineCapacity": 114,
+"price": 74000.0,
+"fuelType": "Petrol",
+"features": {
+"abs": false,
+"digitalConsole": true,
+"fuelInjection": false,
+"bluetoothConnectivity": true
+},
+"launchDate": "2023-10-10",
+"warrantyYears": 2
+
+
+  
+  

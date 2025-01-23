@@ -1,0 +1,54 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "SchemaName": {
+            "type": "string"
+        },
+        "ExecutionService": {
+            "type": "string"
+        },
+        "ValidationService": {
+            "type": "string"
+        },
+        "ReadSaveStrategyService": {
+            "type": "string"
+        },
+        "DataTransformerService": {
+            "type": "string"
+        },
+        "CacheService": {
+            "type": "string"
+        },
+        "CacheStrategyService": {
+            "type": "string"
+        },
+        "SearchService": {
+            "type": "string"
+        },
+        "SearchStrategyService": {
+            "type": "string"
+        },
+        "ParameterContext": {
+            "type": "string"
+        },
+        "FactoryValidationService": {
+            "type": "string"
+        },
+        "UtilityService": {
+            "type": "string"
+        },
+        "createdDate": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "updatedDate": {
+            "type": "string",
+            "format": "date-time"
+        }
+    },
+    "UtilityAttachment": [
+        "factoryCache",
+        "factorySearch"
+    ]
+}

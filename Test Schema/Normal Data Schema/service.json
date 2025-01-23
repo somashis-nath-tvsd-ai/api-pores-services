@@ -1,0 +1,127 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "TVS Service Schema",
+    "description": "Schema for a service associated with a TVS product (Motorcycle, Scooter, etc.)",
+    "type": "object",
+    "properties": {
+        "serviceId": {
+            "type": "string",
+            "description": "Unique identifier for the service"
+        },
+        "productId": {
+            "type": "string",
+            "description": "Identifier for the product this service is associated with"
+        },
+        "serviceType": {
+            "type": "string",
+            "description": "Type of service performed",
+            "enum": [
+                "maintenance",
+                "repair",
+                "replacement",
+                "inspection",
+                "customization"
+            ]
+        },
+        "serviceCenter": {
+            "type": "object",
+            "description": "Information about the service center",
+            "properties": {
+                "centerId": {
+                    "type": "string",
+                    "description": "Unique identifier for the service center"
+                },
+                "centerName": {
+                    "type": "string",
+                    "description": "Name of the service center"
+                },
+                "location": {
+                    "type": "object",
+                    "description": "Location of the service center",
+                    "properties": {
+                        "address": {
+                            "type": "string",
+                            "description": "Street address of the service center"
+                        },
+                        "city": {
+                            "type": "string",
+                            "description": "City of the service center"
+                        },
+                        "postalCode": {
+                            "type": "string",
+                            "description": "Postal code of the service center"
+                        },
+                        "country": {
+                            "type": "string",
+                            "description": "Country of the service center"
+                        }
+                    },
+                    "required": [
+                        "address",
+                        "city",
+                        "postalCode",
+                        "country"
+                    ]
+                }
+            },
+            "required": [
+                "centerId",
+                "centerName",
+                "location"
+            ]
+        },
+        "serviceDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when the service was performed"
+        },
+        "cost": {
+            "type": "number",
+            "description": "Cost of the service in INR",
+            "minimum": 0
+        },
+        "serviceDetails": {
+            "type": "object",
+            "description": "Detailed information about the service",
+            "properties": {
+                "issuesResolved": {
+                    "type": "array",
+                    "description": "List of issues resolved during the service",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "partsReplaced": {
+                    "type": "array",
+                    "description": "List of parts replaced",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "serviceDurationHours": {
+                    "type": "number",
+                    "description": "Duration of the service in hours",
+                    "minimum": 0
+                }
+            },
+            "required": [
+                "issuesResolved",
+                "serviceDurationHours"
+            ]
+        },
+        "warrantyExtensionMonths": {
+            "type": "integer",
+            "description": "Warranty extension period (if applicable) in months",
+            "minimum": 0
+        }
+    },
+    "required": [
+        "serviceId",
+        "productId",
+        "serviceType",
+        "serviceCenter",
+        "serviceDate",
+        "cost",
+        "serviceDetails"
+    ]
+}

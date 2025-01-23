@@ -1,0 +1,93 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "title": "TVS Product Schema",
+    "description": "Schema for a TVS company product (Motorcycle).",
+    "properties": {
+        "productId": {
+            "type": "string",
+            "description": "Unique identifier for the product"
+        },
+        "name": {
+            "type": "string",
+            "description": "Name of the product"
+        },
+        "category": {
+            "type": "string",
+            "enum": [
+                "Motorcycle",
+                "Scooter",
+                "Moped"
+            ],
+            "description": "Category of the product"
+        },
+        "engineCapacity": {
+            "type": "integer",
+            "description": "Engine capacity of the motorcycle in cc",
+            "minimum": 50,
+            "maximum": 1200
+        },
+        "price": {
+            "type": "number",
+            "description": "Price of the product in USD",
+            "minimum": 500
+        },
+        "fuelType": {
+            "type": "string",
+            "enum": [
+                "Petrol",
+                "Electric",
+                "Hybrid"
+            ],
+            "description": "Type of fuel the product uses"
+        },
+        "features": {
+            "type": "object",
+            "properties": {
+                "abs": {
+                    "type": "boolean",
+                    "description": "Does the product have ABS (Anti-lock Braking System)?"
+                },
+                "digitalConsole": {
+                    "type": "boolean",
+                    "description": "Does the product have a digital console?"
+                },
+                "fuelInjection": {
+                    "type": "boolean",
+                    "description": "Does the product have fuel injection?"
+                },
+                "bluetoothConnectivity": {
+                    "type": "boolean",
+                    "description": "Does the product support Bluetooth connectivity?"
+                }
+            },
+            "required": [
+                "abs",
+                "digitalConsole",
+                "fuelInjection"
+            ]
+        },
+        "launchDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The launch date of the product"
+        },
+        "warrantyYears": {
+            "type": "integer",
+            "description": "Number of years of warranty for the product",
+            "minimum": 1,
+            "maximum": 5
+        }
+    },
+    "required": [
+        "productId",
+        "name",
+        "category",
+        "engineCapacity",
+        "price",
+        "fuelType",
+        "features",
+        "launchDate",
+        "warrantyYears"
+    ]
+}

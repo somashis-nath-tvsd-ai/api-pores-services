@@ -1,0 +1,23 @@
+  [
+      {
+      "SchemaName": "service",
+      "ExecutionService":"com.function.contentprovider.service.execution.impl.ContentPartnerServiceImpl",
+      "ValidationService": "com.function.contentprovider.service.validation.impl.ContentPartnerValidation",
+      "ReadSaveStrategyService": "com.function.contentprovider.service.readsavestrategy.impl.ContentProviderReadSaveImpl",
+      "DataTransformerService": "com.function.contentprovider.service.transformers.impl.ContentPartnerTransformers",
+      "CacheService": "com.function.pores.cache.CacheService",
+      "CacheStrategyService":"com.function.contentprovider.service.cache.impl.ContentPartnerCacheService",
+      "SearchService": "com.function.pores.elasticsearch.service.EsUtilServiceImpl",
+      "createdDate": "2012-04-23T18:25:43.511Z",
+      "updatedDate": "2012-04-23T18:25:43.511Z",
+      "UtilityAttachment": [
+            "com.function.pores.cache.CacheService",
+            "com.function.pores.elasticsearch.service.EsUtilServiceImpl"
+      ]
+    }
+
+  ]
+
+
+
+

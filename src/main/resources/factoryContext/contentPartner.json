@@ -1,0 +1,20 @@
+  [
+      {
+      "factoryName": "contentValidation",
+      "factoryExecutor":"com.igot.cb.contentprovider.service.execution.impl.ContentPartnerServiceImpl",
+      "factoryValidator": "com.igot.cb.contentprovider.service.validation.impl.ContentPartnerValidation",
+      "factoryReadSave": "com.igot.cb.contentprovider.service.readsavestrategy.impl.ContentProviderReadSaveImpl",
+      "factoryDataTransform": "com.igot.cb.contentprovider.service.transformers.impl.ContentPartnerTransformers",
+      "factoryUtility": "com.igot.cb.contentprovider.service.utility.impl.ContentPartnerUtilityService",
+      "factoryCache": "com.igot.cb.pores.cache.CacheService",
+      "factoryCacheStrategy":"com.igot.cb.contentprovider.service.cache.impl.ContentPartnerCacheService",
+      "factorySearch": "com.igot.cb.pores.elasticsearch.service.EsUtilServiceImpl",
+      "createdDate": "2012-04-23T18:25:43.511Z",
+      "updatedDate": "2012-04-23T18:25:43.511Z",
+      "factoryUtilityAttachment": [
+            "com.igot.cb.pores.cache.CacheService",
+            "com.igot.cb.pores.elasticsearch.service.EsUtilServiceImpl"
+      ]
+    }
+
+  ]

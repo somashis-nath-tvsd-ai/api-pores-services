@@ -1,0 +1,62 @@
+{
+    "properties": {
+        "serviceId": {
+            "type": "keyword"
+        },
+        "productId": {
+            "type": "keyword"
+        },
+        "serviceType": {
+            "type": "keyword"
+        },
+        "serviceCenter": {
+            "properties": {
+                "centerId": {
+                    "type": "keyword"
+                },
+                "centerName": {
+                    "type": "keyword"
+                },
+                "location": {
+                    "properties": {
+                        "address": {
+                            "type": "keyword"
+                        },
+                        "city": {
+                            "type": "keyword"
+                        },
+                        "postalCode": {
+                            "type": "keyword"
+                        },
+                        "country": {
+                            "type": "keyword"
+                        }
+                    }
+                }
+            }
+        },
+        "serviceDate": {
+            "type": "date",
+            "format": "yyyy-MM-dd"
+        },
+        "cost": {
+            "type": "double"
+        },
+        "serviceDetails": {
+            "properties": {
+                "issuesResolved": {
+                    "type": "keyword"
+                },
+                "partsReplaced": {
+                    "type": "keyword"
+                },
+                "serviceDurationHours": {
+                    "type": "double"
+                }
+            }
+        },
+        "warrantyExtensionMonths": {
+            "type": "integer"
+        }
+    }
+}

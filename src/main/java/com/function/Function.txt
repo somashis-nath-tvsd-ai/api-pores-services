@@ -1,0 +1,364 @@
+package com.function;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
+import com.microsoft.azure.functions.ExecutionContext;
+import com.microsoft.azure.functions.HttpMethod;
+import com.microsoft.azure.functions.HttpRequestMessage;
+import com.microsoft.azure.functions.HttpResponseMessage;
+import com.microsoft.azure.functions.HttpStatus;
+import com.microsoft.azure.functions.annotation.AuthorizationLevel;
+import com.microsoft.azure.functions.annotation.FunctionName;
+import com.microsoft.azure.functions.annotation.HttpTrigger;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.function.execution.basic.ExecutionDefaultRepository;
+import com.function.execution.component.api.ExecutionService;
+import com.function.execution.component.api.ParameterContext;
+import com.function.execution.component.core.ExecutionContextBean;
+import com.function.execution.component.core.FactoryBeanEntity;
+import com.function.execution.component.core.FactoryContextBean;
+import com.function.execution.component.service.CacheStrategyService;
+import com.function.execution.component.service.DataTransformerService;
+import com.function.execution.component.service.FactoryValidationService;
+import com.function.execution.component.service.ReadSaveStartegyService;
+import com.function.execution.component.service.UtilityService;
+import com.function.execution.component.service.ValidationService;
+import com.function.execution.component.util.Utilities;
+import com.function.pores.SpringBootConfig;
+import com.function.pores.cache.ICacheService;
+import com.function.pores.dto.CustomResponse;
+import com.function.pores.elasticsearch.service.EsUtilService;
+
+
+/**
+ * Azure Functions with HTTP Trigger.
+ */
+@Component
+public class Function  {
+
+    @Autowired
+    private FactoryValidationService factoryValidationService;
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    //context after schema validation
+    private ExecutionService executionService;
+    private ValidationService validationService;
+    private ReadSaveStartegyService readSaveStrategyService;
+    private DataTransformerService dataTransformerService;
+    private UtilityService utilityService;
+    private CacheStrategyService cacheStrategyService;
+    private JpaRepository entityRepository;
+    private ICacheService icacheService;
+    List<Utilities> utilityListAttach = new ArrayList<>();
+
+    //context before schema validation
+    private ParameterContext parameterContext;
+    private EsUtilService esUtilService;
+
+    //context at configuration loading
+    private Utilities utilities;
+
+    @Autowired
+    private ConfigurableBeanFactory beanFactory;
+
+    @Autowired
+    private ExecutionDefaultRepository executionDefaultRepository;
+
+    @Autowired
+    private FactoryContextBean factoryContext;
+
+    private ExecutionContextBean executionContextBean;
+
+    /**
+     * This function listens at endpoint "/api/HttpExample". Two ways to invoke it using "curl" command in bash:
+     * 1. curl -d "HTTP Body" {your host}/api/HttpExample
+     * 2. curl "{your host}/api/HttpExample?name=HTTP%20Query"
+     */
+    @FunctionName("create")
+    public HttpResponseMessage create(
+            @HttpTrigger(
+                name = "req",
+                methods = {HttpMethod.POST},
+                authLevel = AuthorizationLevel.ANONYMOUS)
+                HttpRequestMessage<Optional<String>> request,
+            final ExecutionContext executionContext) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+                executionContext.getLogger().info("Java HTTP trigger processed a request.");
+
+                //MyRequest body = request.getBody().orElse(null);
+
+        // Parse query parameter
+        //final String query = request.getQueryParameters().get("name");
+        //final String name = request.getBody().orElse(query);
+        ObjectMapper objectMapper = new ObjectMapper();
+        executionContext.getLogger().info("Java HTTP trigger processed objectMapper.");
+        JsonNode data = objectMapper.readTree(request.getBody().get());
+        executionContext.getLogger().info("Java HTTP trigger processed data ."+data.asText());
+        // if (applicationContext == null) {
+        //     applicationContext = SpringBootConfig.initialize();
+        // }
+         //executionContext.getLogger().info("Java HTTP trigger processed applicationContext ."+applicationContext.getDisplayName());
+        // CustomResponse validResponse = factoryValidationService.createUpdateValidation(data);
+        // executionContext.getLogger().info("Java HTTP trigger processed validResponse ."+validResponse.getMessage());
+        // CustomResponse response = new CustomResponse();
+        // if(validResponse.getResponseCode().equals(HttpStatus.OK)){
+        //     String contentSchema = data.get("schema").textValue();
+        //     executionContext.getLogger().info("Java HTTP trigger processed contentSchema ."+contentSchema);
+        //     boolean validation = factoryValidationService.validateSchema(contentSchema);
+        //     executionContext.getLogger().info("Java HTTP trigger processed validation ."+validation);
+        //     if(validation) {
+        //         if (!applicationContext.getAutowireCapableBeanFactory().containsBean(contentSchema+ "-bean")) {
+        //             executionContextBean = new ExecutionContextBean(data,applicationContext);
+        //                 Map<String, Object> beansMap = new HashMap<>();
+        //                 beansMap.put(contentSchema, executionContextBean);
+        //                 FactoryBeanEntity beanHolder = new FactoryBeanEntity(beansMap);
+        //                 beanFactory.registerSingleton(contentSchema + "-bean", beanHolder);
+        //         }else{
+        //             Map<String, Object> beansMap = (Map<String, Object>) applicationContext.getAutowireCapableBeanFactory().getBean(contentSchema + "-bean");
+        //                 executionContextBean = (ExecutionContextBean) beansMap.get(contentSchema);
+        //         }
+        //         response = executionContextBean.getExecutionService().createOrUpdate( data, executionContextBean);
+        //     }
+        // }
+
+         String targetUrl = "https://www.example.com";   
+
+         return request.createResponseBuilder(HttpStatus.OK)
+         .header("Location", targetUrl)
+         .body("")  // Set the JSON string as the body
+         .build();
+    }
+
+    @FunctionName("update")
+    public HttpResponseMessage update(
+            @HttpTrigger(
+                name = "req",
+                methods = {HttpMethod.POST},
+                authLevel = AuthorizationLevel.ANONYMOUS)
+                HttpRequestMessage<Optional<String>> request,
+            final ExecutionContext executionContext) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+                executionContext.getLogger().info("Java HTTP trigger processed a request.");
+
+                //MyRequest body = request.getBody().orElse(null);
+
+        // Parse query parameter
+        //final String query = request.getQueryParameters().get("name");
+        //final String name = request.getBody().orElse(query);
+        ObjectMapper objectMapper = new ObjectMapper();
+        executionContext.getLogger().info("Java HTTP trigger processed objectMapper.");
+        JsonNode data = objectMapper.readTree(request.getBody().get());
+        executionContext.getLogger().info("Java HTTP trigger processed data ."+data.asText());
+        // if (applicationContext == null) {
+        //     applicationContext = SpringBootConfig.initialize();
+        // }
+        // executionContext.getLogger().info("Java HTTP trigger processed applicationContext ."+applicationContext.getDisplayName());
+        // CustomResponse validResponse = factoryValidationService.createUpdateValidation(data);
+        // executionContext.getLogger().info("Java HTTP trigger processed validResponse ."+validResponse.getMessage());
+        // CustomResponse response = new CustomResponse();
+        // if(validResponse.getResponseCode().equals(HttpStatus.OK)){
+        //     String contentSchema = data.get("schema").textValue();
+        //     executionContext.getLogger().info("Java HTTP trigger processed contentSchema ."+contentSchema);
+        //     boolean validation = factoryValidationService.validateSchema(contentSchema);
+        //     executionContext.getLogger().info("Java HTTP trigger processed validation ."+validation);
+        //     if(validation) {
+        //         if (!applicationContext.getAutowireCapableBeanFactory().containsBean(contentSchema+ "-bean")) {
+        //             executionContextBean = new ExecutionContextBean(data,applicationContext);
+        //                 Map<String, Object> beansMap = new HashMap<>();
+        //                 beansMap.put(contentSchema, executionContextBean);
+        //                 FactoryBeanEntity beanHolder = new FactoryBeanEntity(beansMap);
+        //                 beanFactory.registerSingleton(contentSchema + "-bean", beanHolder);
+        //         }else{
+        //             Map<String, Object> beansMap = (Map<String, Object>) applicationContext.getAutowireCapableBeanFactory().getBean(contentSchema + "-bean");
+        //                 executionContextBean = (ExecutionContextBean) beansMap.get(contentSchema);
+        //         }
+        //         response = executionContextBean.getExecutionService().createOrUpdate( data, executionContextBean);
+        //     }
+        // }
+
+        String targetUrl = "https://www.example.com";   
+
+        return request.createResponseBuilder(HttpStatus.OK)
+        .header("Location", targetUrl)
+        .body("")  // Set the JSON string as the body
+        .build();
+    }
+
+    @FunctionName("read")
+    public HttpResponseMessage read(
+            @HttpTrigger(
+                name = "req",
+                methods = {HttpMethod.POST},
+                authLevel = AuthorizationLevel.ANONYMOUS)
+                HttpRequestMessage<Optional<String>> request,
+            final ExecutionContext executionContext) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+                executionContext.getLogger().info("Java HTTP trigger processed a request.");
+
+                //MyRequest body = request.getBody().orElse(null);
+
+        // Parse query parameter
+        //final String query = request.getQueryParameters().get("name");
+        //final String name = request.getBody().orElse(query);
+        ObjectMapper objectMapper = new ObjectMapper();
+        executionContext.getLogger().info("Java HTTP trigger processed objectMapper."+request.getBody());
+        //JsonNode data = objectMapper.readTree(request.getBody().get());
+        //executionContext.getLogger().info("Java HTTP trigger processed data ."+data.asText());
+        // if (applicationContext == null) {
+        //     applicationContext = SpringBootConfig.initialize();
+        // }
+        // executionContext.getLogger().info("Java HTTP trigger processed applicationContext ."+applicationContext.getDisplayName());
+        // CustomResponse validResponse = factoryValidationService.createUpdateValidation(data);
+        // executionContext.getLogger().info("Java HTTP trigger processed validResponse ."+validResponse.getMessage());
+        // CustomResponse response = new CustomResponse();
+        // if(validResponse.getResponseCode().equals(HttpStatus.OK)){
+        //     String contentSchema = data.get("schema").textValue();
+        //     executionContext.getLogger().info("Java HTTP trigger processed contentSchema ."+contentSchema);
+        //     boolean validation = factoryValidationService.validateSchema(contentSchema);
+        //     executionContext.getLogger().info("Java HTTP trigger processed validation ."+validation);
+        //     if(validation) {
+        //         if (!applicationContext.getAutowireCapableBeanFactory().containsBean(contentSchema+ "-bean")) {
+        //             executionContextBean = new ExecutionContextBean(data,applicationContext);
+        //                 Map<String, Object> beansMap = new HashMap<>();
+        //                 beansMap.put(contentSchema, executionContextBean);
+        //                 FactoryBeanEntity beanHolder = new FactoryBeanEntity(beansMap);
+        //                 beanFactory.registerSingleton(contentSchema + "-bean", beanHolder);
+        //         }else{
+        //             Map<String, Object> beansMap = (Map<String, Object>) applicationContext.getAutowireCapableBeanFactory().getBean(contentSchema + "-bean");
+        //                 executionContextBean = (ExecutionContextBean) beansMap.get(contentSchema);
+        //         }
+        //         response = executionContextBean.getExecutionService().createOrUpdate( data, executionContextBean);
+        //     }
+        // }
+
+        String targetUrl = "https://www.example.com";   
+
+        return request.createResponseBuilder(HttpStatus.OK)
+        .header("Location", targetUrl)
+        .body("")  // Set the JSON string as the body
+        .build();
+    }
+
+    @FunctionName("delete")
+    public HttpResponseMessage delete(
+            @HttpTrigger(
+                name = "req",
+                methods = {HttpMethod.POST},
+                authLevel = AuthorizationLevel.ANONYMOUS)
+                HttpRequestMessage<Optional<String>> request,
+            final ExecutionContext executionContext) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+                executionContext.getLogger().info("Java HTTP trigger processed a request.");
+
+                //MyRequest body = request.getBody().orElse(null);
+
+        // Parse query parameter
+        //final String query = request.getQueryParameters().get("name");
+        //final String name = request.getBody().orElse(query);
+        ObjectMapper objectMapper = new ObjectMapper();
+        executionContext.getLogger().info("Java HTTP trigger processed objectMapper.");
+        //JsonNode data = objectMapper.readTree(request.getBody().orElse(null));
+        //executionContext.getLogger().info("Java HTTP trigger processed data ."+data.asText());
+        // if (applicationContext == null) {
+        //     applicationContext = SpringBootConfig.initialize();
+        // }
+        // executionContext.getLogger().info("Java HTTP trigger processed applicationContext ."+applicationContext.getDisplayName());
+        // CustomResponse validResponse = factoryValidationService.createUpdateValidation(data);
+        // executionContext.getLogger().info("Java HTTP trigger processed validResponse ."+validResponse.getMessage());
+        // CustomResponse response = new CustomResponse();
+        // if(validResponse.getResponseCode().equals(HttpStatus.OK)){
+        //     String contentSchema = data.get("schema").textValue();
+        //     executionContext.getLogger().info("Java HTTP trigger processed contentSchema ."+contentSchema);
+        //     boolean validation = factoryValidationService.validateSchema(contentSchema);
+        //     executionContext.getLogger().info("Java HTTP trigger processed validation ."+validation);
+        //     if(validation) {
+        //         if (!applicationContext.getAutowireCapableBeanFactory().containsBean(contentSchema+ "-bean")) {
+        //             executionContextBean = new ExecutionContextBean(data,applicationContext);
+        //                 Map<String, Object> beansMap = new HashMap<>();
+        //                 beansMap.put(contentSchema, executionContextBean);
+        //                 FactoryBeanEntity beanHolder = new FactoryBeanEntity(beansMap);
+        //                 beanFactory.registerSingleton(contentSchema + "-bean", beanHolder);
+        //         }else{
+        //             Map<String, Object> beansMap = (Map<String, Object>) applicationContext.getAutowireCapableBeanFactory().getBean(contentSchema + "-bean");
+        //                 executionContextBean = (ExecutionContextBean) beansMap.get(contentSchema);
+        //         }
+        //         response = executionContextBean.getExecutionService().createOrUpdate( data, executionContextBean);
+        //     }
+        // }
+
+        String targetUrl = "https://www.example.com";   
+
+        return request.createResponseBuilder(HttpStatus.OK)
+        .header("Location", targetUrl)
+        .body("")  // Set the JSON string as the body
+        .build();
+    }
+
+    @FunctionName("search")
+    public HttpResponseMessage search(
+            @HttpTrigger(
+                name = "req",
+                methods = {HttpMethod.POST},
+                authLevel = AuthorizationLevel.ANONYMOUS)
+                HttpRequestMessage<Optional<String>> request,
+            final ExecutionContext executionContext) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+                executionContext.getLogger().info("Java HTTP trigger processed a request.");
+
+                //MyRequest body = request.getBody().orElse(null);
+
+        // Parse query parameter
+        //final String query = request.getQueryParameters().get("name");
+        //final String name = request.getBody().orElse(query);
+        ObjectMapper objectMapper = new ObjectMapper();
+        executionContext.getLogger().info("Java HTTP trigger processed objectMapper.");
+        //JsonNode data = objectMapper.readTree(request.getBody().orElse(null));
+        //executionContext.getLogger().info("Java HTTP trigger processed data ."+data.asText());
+        // if (applicationContext == null) {
+        //     applicationContext = SpringBootConfig.initialize();
+        // }
+        // executionContext.getLogger().info("Java HTTP trigger processed applicationContext ."+applicationContext.getDisplayName());
+        // CustomResponse validResponse = factoryValidationService.createUpdateValidation(data);
+        // executionContext.getLogger().info("Java HTTP trigger processed validResponse ."+validResponse.getMessage());
+        // CustomResponse response = new CustomResponse();
+        // if(validResponse.getResponseCode().equals(HttpStatus.OK)){
+        //     String contentSchema = data.get("schema").textValue();
+        //     executionContext.getLogger().info("Java HTTP trigger processed contentSchema ."+contentSchema);
+        //     boolean validation = factoryValidationService.validateSchema(contentSchema);
+        //     executionContext.getLogger().info("Java HTTP trigger processed validation ."+validation);
+        //     if(validation) {
+        //         if (!applicationContext.getAutowireCapableBeanFactory().containsBean(contentSchema+ "-bean")) {
+        //             executionContextBean = new ExecutionContextBean(data,applicationContext);
+        //                 Map<String, Object> beansMap = new HashMap<>();
+        //                 beansMap.put(contentSchema, executionContextBean);
+        //                 FactoryBeanEntity beanHolder = new FactoryBeanEntity(beansMap);
+        //                 beanFactory.registerSingleton(contentSchema + "-bean", beanHolder);
+        //         }else{
+        //             Map<String, Object> beansMap = (Map<String, Object>) applicationContext.getAutowireCapableBeanFactory().getBean(contentSchema + "-bean");
+        //                 executionContextBean = (ExecutionContextBean) beansMap.get(contentSchema);
+        //         }
+        //         response = executionContextBean.getExecutionService().createOrUpdate( data, executionContextBean);
+        //     }
+        // }
+
+        String targetUrl = "https://www.example.com";   
+
+        return request.createResponseBuilder(HttpStatus.OK)
+        .header("Location", targetUrl)
+        .body("")  // Set the JSON string as the body
+        .build();
+    }
+}

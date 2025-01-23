@@ -1,0 +1,45 @@
+{
+    "properties": {
+        "productId": {
+            "type": "keyword"
+        },
+        "name": {
+            "type": "keyword"
+        },
+        "category": {
+            "type": "keyword"
+        },
+        "engineCapacity": {
+            "type": "integer"
+        },
+        "price": {
+            "type": "float"
+        },
+        "fuelType": {
+            "type": "keyword"
+        },
+        "features": {
+            "properties": {
+                "abs": {
+                    "type": "boolean"
+                },
+                "digitalConsole": {
+                    "type": "boolean"
+                },
+                "fuelInjection": {
+                    "type": "boolean"
+                },
+                "bluetoothConnectivity": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "launchDate": {
+            "type": "date",
+            "format": "yyyy-MM-dd"
+        },
+        "warrantyYears": {
+            "type": "integer"
+        }
+    }
+}
