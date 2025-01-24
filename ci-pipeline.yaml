@@ -1,0 +1,21 @@
+trigger:
+- main # branch to trigger CI pipeline
+pr: none # disable trigger on PR requets
+
+parameters:
+- name: serviceName
+  type: string
+  default: 'api-pores-services' # Update this: Name of the repo
+
+resources:
+  repositories:
+  - repository: devopsRepo # devops reponame alias
+    type: github
+    endpoint: devops-repo
+    name: TVSM-DMS/Devops_ISSM_pipelines
+    ref: refs/heads/ci-cd-bash
+
+extends:
+  template: pipelines/build-template.yml@devopsRepo
+  parameters:
+    serviceName: ${{ parameters.serviceName }}

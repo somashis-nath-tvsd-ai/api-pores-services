@@ -1,0 +1,48 @@
+trigger: none
+pr: none
+
+# Parameters which will be passed to the template file that is hosted
+# in the Devops repo. Please update the values respective to
+# the service that we are deploying
+
+parameters:
+  - name: ciPipelineName
+    type: string
+    default: 'build-pores-service' # Update this: CI pipeline name which will trigger this job
+  - name: serviceName
+    type: string
+    default: 'pores-service' # Update this: Service to be deployed. Note: helmchart name should be the same
+  - name: environments
+    type: object
+    default:
+      - name: 'dev'
+        notifyEmail: ''
+        dependsOn: []
+      - name: 'uat'
+        notifyEmail: 'santhoshkumar.s@tvsd.ai' # Update this
+        dependsOn: # Dependent stages which needs to completed first
+          - DeployToDev
+          - ManualApprovalForUAT
+      #- name: 'prod'
+      #  notifyEmail: 'santhoshkumar.s@tvsd.ai' # Update this
+      #  dependsOn:
+      #    - DeployToUAT
+      #    - ManualApprovalForProd # enable after prod env is introduced
+
+resources:
+  repositories:
+  - repository: devopsRepo # devops reponame alias 
+    type: github
+    endpoint: devops-repo # ADO serviceconnection name
+    name: TVSM-DMS/Devops_ISSM_pipelines # repo name
+    ref: refs/heads/ci-cd-bash # branch name
+  pipelines:
+    - pipeline: buildPipeline
+      source: 'build-pores-service'
+      trigger: true
+extends:
+  template: pipelines/deploy-template-cs.yml@devopsRepo
+  parameters:
+    ciPipelineName: ${{ parameters.ciPipelineName }}
+    serviceName: ${{ parameters.serviceName }}
+    environments: ${{ parameters.environments }} 
